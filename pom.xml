@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.yingxs</groupId>
-	<artifactId>yingxxs-security</artifactId>
+	<artifactId>yingxs-security</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>yingxxs-security</name>
+	<name>yingxs-security</name>
 	<description>yingxs - security project</description>
 
 	<properties>
@@ -29,6 +29,26 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+
+		<!--aop依赖-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+
+
 
 
 		<dependency>
