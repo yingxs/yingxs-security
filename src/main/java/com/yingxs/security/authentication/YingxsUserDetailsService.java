@@ -1,18 +1,22 @@
 package com.yingxs.security.authentication;
 
 import com.yingxs.security.support.UserInfo;
-import com.yingxs.security.support.UserInfo2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+/**
+ * 获取用户信息实现类
+ * @author yingxs
+ * @date 2019-10-9 11:03:24
+ * @email ying_xs@163.com
+ */
 @Component
 public class YingxsUserDetailsService implements UserDetailsService {
 
@@ -33,7 +37,7 @@ public class YingxsUserDetailsService implements UserDetailsService {
 //                true,// 密码未过期
 //                true,//是否未被锁定
 //                 AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
-        return new UserInfo2(1,username,password,null,null, true,true,true,true, AuthorityUtils.commaSeparatedStringToAuthorityList("admin") ); // 可用
+        return new UserInfo(1,username,password,null,null, true,true,true,true, AuthorityUtils.commaSeparatedStringToAuthorityList("admin") ); // 可用
 
     }
 

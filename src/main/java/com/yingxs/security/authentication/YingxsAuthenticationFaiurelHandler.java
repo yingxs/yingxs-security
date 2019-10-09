@@ -17,6 +17,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * 登录失败处理器
+ * @author yingxs
+ * @date 2019-10-9 10:56:01
+ * @email ying_xs@163.com
+ */
 @Component("yingxsAuthenticationFaiurelHandler")
 public class YingxsAuthenticationFaiurelHandler extends SimpleUrlAuthenticationFailureHandler {
 
