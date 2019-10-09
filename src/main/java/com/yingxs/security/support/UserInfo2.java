@@ -2,14 +2,10 @@ package com.yingxs.security.support;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.util.Assert;
 
-import java.io.Serializable;
-import java.util.*;
+import java.util.Collection;
 
 /**
  * 用户信息对象
@@ -22,7 +18,7 @@ public class UserInfo2 extends User {
     private String email ;
     private String headImg = "https://img2.woyaogexing.com/2019/10/07/75f08ce15ef942298e0289c3b06a9017!400x400.jpeg";
 
-    public UserInfo2( long userId, String username, String password, String email, String headImg, Collection<? extends GrantedAuthority> authorities) {
+    public UserInfo2(long userId, String username, String password, String email, String headImg, Collection<? extends GrantedAuthority> authorities) {
         this(userId,username,password,email,headImg,true,true,true,true,authorities);
 
     }

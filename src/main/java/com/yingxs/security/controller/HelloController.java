@@ -11,6 +11,7 @@ public class HelloController {
     @RequestMapping(value = "/test")
     public String test(){
 
+        int i = 1/0;
         return "success";
     }
 
