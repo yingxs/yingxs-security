@@ -36,13 +36,13 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.formLogin()
-                .loginPage("/yingxs-signIn.html")           // 登陆页面地址
-                .loginProcessingUrl("/authentication/form")// 登录请求地址
+                .loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
+                .loginProcessingUrl(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM)
                 .failureHandler(yingxsAuthenticationFaiurelHandler)
                 .successHandler(yingxsAuthenticationSuccessHandler)
             .and()
                 .authorizeRequests()
-                .antMatchers( "/yingxs-signIn.html" )
+                .antMatchers( "/yingxs-signIn.html",SecurityConstants.DEFAULT_UNAUTHENTICATION_URL )
             .permitAll()
             .anyRequest()
             .authenticated()
