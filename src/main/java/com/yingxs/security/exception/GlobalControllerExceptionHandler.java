@@ -18,7 +18,7 @@ import java.util.Set;
  * @date 2019-10-18 10:50:42
  * @email ying_xs@163.com
  */
-@RestControllerAdvice
+//@RestControllerAdvice
 //@Slf4j
 public class GlobalControllerExceptionHandler {
 
