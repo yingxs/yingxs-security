@@ -1,8 +1,13 @@
 package com.yingxs.security.authentication;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yingxs.security.aop.SysLog;
 import com.yingxs.security.support.SimpleResponse;
+import com.yingxs.security.support.UserInfo;
+import com.yingxs.security.utils.ContextUtil;
+import com.yingxs.security.utils.WebUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,9 +36,10 @@ public class YingxsAuthenticationFaiurelHandler extends SimpleUrlAuthenticationF
     @Autowired
     private ObjectMapper objectMapper;
 
+    @SysLog("用户登录")
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
         response.setContentType("application/json;charset=UTF-8");
         String message ;
         if ( exception instanceof InternalAuthenticationServiceException) {
@@ -43,6 +49,7 @@ public class YingxsAuthenticationFaiurelHandler extends SimpleUrlAuthenticationF
             message = exception.getMessage();
         }
         response.getWriter().write(objectMapper.writeValueAsString( new SimpleResponse(message)));
+        throw exception;
     }
 }
 

@@ -8,6 +8,10 @@ public class SimpleResponse {
     public SimpleResponse(String message) {
         this.message = message;
     }
+    public SimpleResponse(String message,Object data) {
+        this.message = message;
+        this.data = data;
+    }
 
     private String message;
     private Object data;

@@ -21,8 +21,8 @@ public class UserInfo extends User {
 
     public UserInfo(long userId, String username, String password, String email, String headImg, Collection<? extends GrantedAuthority> authorities) {
         this(userId,username,password,email,headImg,true,true,true,true,authorities);
-
     }
+
 
     public UserInfo(long userId, String username, String password, String email, String headImg, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities ) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
@@ -89,7 +89,4 @@ public class UserInfo extends User {
         return headImg;
     }
 
-    public void setHeadImg(String headImg) {
-        this.headImg = headImg;
-    }
 }

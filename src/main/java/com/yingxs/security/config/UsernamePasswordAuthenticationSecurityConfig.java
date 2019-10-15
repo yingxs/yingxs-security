@@ -1,17 +1,20 @@
 package com.yingxs.security.config;
 
+import com.yingxs.security.aop.SysLog;
 import com.yingxs.security.authentication.YingxsAuthenticationFaiurelHandler;
 import com.yingxs.security.authentication.YingxsAuthenticationSuccessHandler;
 import com.yingxs.security.authentication.form.YingxUsernamePasswordAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class UsernamePasswordAuthenticationSecurityConfig  extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
     @Autowired
@@ -29,4 +32,7 @@ public class UsernamePasswordAuthenticationSecurityConfig  extends SecurityConfi
         yingxUsernamePasswordAuthenticationFilter.setAuthenticationSuccessHandler(yingxsAuthenticationSuccessHandler);
         http.addFilterAfter(yingxUsernamePasswordAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
+
+
 }

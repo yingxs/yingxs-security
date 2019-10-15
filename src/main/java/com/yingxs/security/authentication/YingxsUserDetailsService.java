@@ -28,7 +28,7 @@ public class YingxsUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        logger.info("用户名登陆:"+username);
+//        logger.info("用户名登陆:"+username);
 
         // 该操作应该在注册时进行，这里仅为演示使用
         String password = passwordEncoder.encode("123456");
