@@ -68,7 +68,7 @@ public class ValidateCodeController {
 
         g.dispose();
 
-        ImageCode resultImageCode = new ImageCode(image, sRand, 60);
+        ImageCode resultImageCode = new ImageCode(image, sRand, 600);
         ByteArrayOutputStream imageByte = new ByteArrayOutputStream();
         ImageIO.write(resultImageCode.getImage(), "JPG", imageByte);
         resultImageCode.setBase64String("data:image/jpg;base64,"+Base64.getEncoder().encodeToString(imageByte.toByteArray()));

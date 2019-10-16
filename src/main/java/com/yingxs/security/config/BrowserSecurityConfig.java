@@ -3,6 +3,7 @@ package com.yingxs.security.config;
 import com.yingxs.security.authentication.form.YingxUsernamePasswordAuthenticationFilter;
 import com.yingxs.security.authentication.YingxsAuthenticationFaiurelHandler;
 import com.yingxs.security.authentication.YingxsAuthenticationSuccessHandler;
+import com.yingxs.security.validate.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,7 +46,12 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity  http) throws Exception {
-        http.apply(usernamePasswordAuthenticationSecurityConfig)
+
+        ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
+        validateCodeFilter.setAuthenticationFailureHandler(yingxsAuthenticationFaiurelHandler);
+
+        http.addFilterBefore(validateCodeFilter,YingxUsernamePasswordAuthenticationFilter.class)
+            .apply(usernamePasswordAuthenticationSecurityConfig)
                 .and()
             .formLogin()
             .loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)

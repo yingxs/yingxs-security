@@ -72,7 +72,7 @@ public class LogAspects   {
         try {
             ret = (SimpleResponse)pjp.proceed();
         } catch (Throwable e) {
-            saveErrorLog(request, method, loginIp, action, requestUri, params, username);
+            saveErrorLog(request, method, loginIp, action, requestUri, params, username,e.getMessage());
             return new SimpleResponse(e.getMessage());
         }
 
@@ -98,7 +98,7 @@ public class LogAspects   {
         log.info("loginIp----> {}", loginIp);
     }
 
-    private void saveErrorLog(HttpServletRequest request, String method, String loginIp, String action, String requestUri, String params, String username) {
+    private void saveErrorLog(HttpServletRequest request, String method, String loginIp, String action, String requestUri, String params, String username,String message) {
         log.error("type----> {}", "error");
         log.error("requestUri----> {}", requestUri);
         log.error("params----> {}", params);
@@ -113,6 +113,7 @@ public class LogAspects   {
         log.error("userName----> {}", username);
         log.error("browser----> {}", WebUtil.getBrowserName(request));
         log.error("loginIp----> {}", loginIp);
+        log.error("message----> {}", message);
     }
 
 
