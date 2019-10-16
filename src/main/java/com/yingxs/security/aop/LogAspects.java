@@ -42,7 +42,6 @@ public class LogAspects   {
         String action  = getMethodDescription(pjp);
         String ctx = request.getContextPath();
         String requestUri = getRequestUri(request);
-        requestUri = requestUri.substring(ctx.length()+1);
 
         Object[] args = pjp.getArgs();
         //方法参数
@@ -89,8 +88,8 @@ public class LogAspects   {
 
         if ( "authentication/form".equals(requestUri)) {
             log.info("action----> {}", action+"-表单登录");
-        } else {
-            log.info("action----> {}", action+"-未知类型");
+        }  else {
+            log.info("action----> {}", action);
         }
 
         log.info("userName----> {}", username);
@@ -107,7 +106,7 @@ public class LogAspects   {
         if ( "authentication/form".equals(requestUri)) {
             log.error("action----> {}", action+"-表单登录");
         } else {
-            log.error("action----> {}", action+"-未知类型");
+            log.error("action----> {}", action);
         }
 
         log.error("userName----> {}", username);
