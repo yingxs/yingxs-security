@@ -1,10 +1,13 @@
 package com.yingxs.security.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.yingxs.security.aop.SysLog;
 import com.yingxs.security.support.SimpleResponse;
 import com.yingxs.security.validate.ImageCode;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
+import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -13,25 +16,29 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Base64;
 import java.util.Random;
+import java.util.UUID;
 
 @RestController
 public class ValidateCodeController {
 
-    public static final String SESSION_KEY = "SESSION_KEY_IMAGE_CODE";
+    public static final String SESSION_KEY = "SESSION_KEY_IMAGE_CODE_";
 
+    @SysLog("获取图形验证码")
     @GetMapping("/code/image")
-    public void createCode(HttpServletRequest request,HttpServletResponse response) throws IOException {
+    public SimpleResponse createCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ImageCode imageCode = createImageCode ( new ServletWebRequest(request) );
-//        HttpSession session = request.getSession();
-//        session.setAttribute(SESSION_KEY, imageCode);
-        ServletOutputStream out = response.getOutputStream();
-        ImageIO.write(imageCode.getImage(), "PNG", response.getOutputStream());
-        out.flush();
+        HttpSession session = request.getSession();
+        session.setAttribute(SESSION_KEY+imageCode.getCodeId(), imageCode);
+        return new SimpleResponse("SUCCESS",imageCode);
+//      ImageIO.write(imageCode.getImage(), "PNG", response.getOutputStream());
     }
 
-    public ImageCode createImageCode(ServletWebRequest request) {
+    public ImageCode createImageCode(ServletWebRequest request) throws IOException {
         int width = 67;
         int height = 23;
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);
@@ -61,8 +68,12 @@ public class ValidateCodeController {
 
         g.dispose();
 
-        return new ImageCode(image, sRand, 60);
-
+        ImageCode resultImageCode = new ImageCode(image, sRand, 60);
+        ByteArrayOutputStream imageByte = new ByteArrayOutputStream();
+        ImageIO.write(resultImageCode.getImage(), "JPG", imageByte);
+        resultImageCode.setBase64String("data:image/jpg;base64,"+Base64.getEncoder().encodeToString(imageByte.toByteArray()));
+        resultImageCode.setCodeId(UUID.randomUUID().toString());
+        return resultImageCode;
     }
 
     /**

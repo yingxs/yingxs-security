@@ -1,5 +1,8 @@
 package com.yingxs.security.validate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+
 import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
 
@@ -8,6 +11,9 @@ public class ImageCode {
     private BufferedImage image;
     private String code;
     private LocalDateTime expireTime;
+    private String codeId = "";
+    private String base64String = "";
+
 
 
     public ImageCode(BufferedImage image, String code, int expireIn) {
@@ -21,7 +27,7 @@ public class ImageCode {
         this.expireTime = expireTime;
     }
 
-
+    @JsonIgnore
     public BufferedImage getImage() {
         return image;
     }
@@ -30,6 +36,7 @@ public class ImageCode {
         this.image = image;
     }
 
+    @JsonIgnore
     public String getCode() {
         return code;
     }
@@ -38,6 +45,7 @@ public class ImageCode {
         this.code = code;
     }
 
+    @JsonIgnore
     public LocalDateTime getExpireTime() {
         return expireTime;
     }
@@ -46,7 +54,24 @@ public class ImageCode {
         this.expireTime = expireTime;
     }
 
+    @JsonIgnore
     public boolean isExpried() {
         return LocalDateTime.now().isAfter(expireTime);
+    }
+
+    public String getCodeId() {
+        return codeId;
+    }
+
+    public void setCodeId(String codeId) {
+        this.codeId = codeId;
+    }
+
+    public String getBase64String() {
+        return base64String;
+    }
+
+    public void setBase64String(String base64String) {
+        this.base64String = base64String;
     }
 }

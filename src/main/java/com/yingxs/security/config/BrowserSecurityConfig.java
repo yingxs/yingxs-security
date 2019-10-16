@@ -54,7 +54,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .successHandler(yingxsAuthenticationSuccessHandler)
             .and()
                 .authorizeRequests()
-                .antMatchers( SecurityConstants.DEFAULT_LOGIN_PAGE,SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,"/code/image" )
+                .antMatchers( SecurityConstants.DEFAULT_LOGIN_PAGE,SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,"/code/*" )
             .permitAll()
             .anyRequest()
             .authenticated()

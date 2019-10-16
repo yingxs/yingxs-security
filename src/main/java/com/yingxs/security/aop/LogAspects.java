@@ -52,9 +52,12 @@ public class LogAspects   {
         // 1.获取用户认证信息
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserInfo userInfo = null;
-        if (authentication != null) {
+        String username = "游客";
+        if (authentication != null && authentication.getPrincipal() instanceof  UserInfo) {
             userInfo = (UserInfo) authentication.getPrincipal();
+            username = userInfo.getUsername();
         }
+
 
         // 2.判断参数中是否含有异常信息-主要针对登录失败
         for (Object obj:args) {
@@ -69,16 +72,16 @@ public class LogAspects   {
         try {
             ret = (SimpleResponse)pjp.proceed();
         } catch (Throwable e) {
-            saveErrorLog(request, method, loginIp, action, requestUri, params, userInfo);
+            saveErrorLog(request, method, loginIp, action, requestUri, params, username);
             return new SimpleResponse(e.getMessage());
         }
 
         // 4.方法正常运行日志记录
-        saveInfoLog(request, method, loginIp, action, requestUri, params, userInfo);
+        saveInfoLog(request, method, loginIp, action, requestUri, params, username);
         return ret;
     }
 
-    private void saveInfoLog(HttpServletRequest request, String method, String loginIp, String action, String requestUri, String params, UserInfo userInfo) {
+    private void saveInfoLog(HttpServletRequest request, String method, String loginIp, String action, String requestUri, String params, String username) {
         log.info("type----> {}", "info");
         log.info("requestUri----> {}", requestUri);
         log.info("params----> {}", params);
@@ -90,12 +93,12 @@ public class LogAspects   {
             log.info("action----> {}", action+"-未知类型");
         }
 
-        log.info("userName----> {}", userInfo.getUsername());
+        log.info("userName----> {}", username);
         log.info("browser----> {}", WebUtil.getBrowserName(request));
         log.info("loginIp----> {}", loginIp);
     }
 
-    private void saveErrorLog(HttpServletRequest request, String method, String loginIp, String action, String requestUri, String params, UserInfo userInfo) {
+    private void saveErrorLog(HttpServletRequest request, String method, String loginIp, String action, String requestUri, String params, String username) {
         log.error("type----> {}", "error");
         log.error("requestUri----> {}", requestUri);
         log.error("params----> {}", params);
@@ -107,7 +110,7 @@ public class LogAspects   {
             log.error("action----> {}", action+"-未知类型");
         }
 
-        log.error("userName----> {}", userInfo != null ? userInfo.getUsername() : "游客");
+        log.error("userName----> {}", username);
         log.error("browser----> {}", WebUtil.getBrowserName(request));
         log.error("loginIp----> {}", loginIp);
     }
