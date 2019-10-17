@@ -1,5 +1,8 @@
 package com.yingxs.security.config;
 
+import com.yingxs.security.authentication.YingxsAuthenticationFaiurelHandler;
+import com.yingxs.security.authentication.YingxsAuthenticationSuccessHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,6 +13,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
+
+    @Autowired
+    YingxsAuthenticationSuccessHandler yingxsAuthenticationSuccessHandler;
+
+    @Autowired
+    YingxsAuthenticationFaiurelHandler yingxsAuthenticationFaiurelHandler;
 
     // 配置密码加密与解密方式
     @Bean
@@ -23,6 +32,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .loginPage("/yingxs-signIn.html")           // 登陆页面地址
                 .loginProcessingUrl("/authentication/form")// 登录请求地址
+                .failureHandler(yingxsAuthenticationFaiurelHandler)
+                .successHandler(yingxsAuthenticationSuccessHandler)
             .and()
                 .authorizeRequests()
                 .antMatchers( "/yingxs-signIn.html" )
