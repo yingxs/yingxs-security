@@ -4,8 +4,13 @@ import com.yingxs.security.authentication.YingxsLoginUrlAuthenticationEntryPoint
 import com.yingxs.security.authentication.form.YingxUsernamePasswordAuthenticationFilter;
 import com.yingxs.security.authentication.YingxsAuthenticationFaiurelHandler;
 import com.yingxs.security.authentication.YingxsAuthenticationSuccessHandler;
+import com.yingxs.security.properties.SecurityProperties;
+import com.yingxs.security.validate.ImageCodeGenerator;
 import com.yingxs.security.validate.ValidateCodeFilter;
+import com.yingxs.security.validate.ValidateCodeGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AnonymousAuthenticationProvider;
@@ -26,17 +31,21 @@ import java.util.ArrayList;
  *  @email ying_xs@163.com
  */
 @Configuration
+@EnableConfigurationProperties(SecurityProperties.class)
 public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Autowired
-    YingxsAuthenticationSuccessHandler yingxsAuthenticationSuccessHandler;
+    private YingxsAuthenticationSuccessHandler yingxsAuthenticationSuccessHandler;
 
     @Autowired
-    YingxsAuthenticationFaiurelHandler yingxsAuthenticationFaiurelHandler;
+    private YingxsAuthenticationFaiurelHandler yingxsAuthenticationFaiurelHandler;
 
     @Autowired
-    UsernamePasswordAuthenticationSecurityConfig usernamePasswordAuthenticationSecurityConfig;
+    private UsernamePasswordAuthenticationSecurityConfig usernamePasswordAuthenticationSecurityConfig;
+
+    @Autowired
+    private SecurityProperties securityProperties;
 
     // 配置密码加密与解密方式
     @Bean
@@ -77,4 +86,14 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .authenticated();		// 不需要身份认证
 
     }
+
+    @Bean // 不存在名为imageCodeGenerator的bean时才用这个
+    @ConditionalOnMissingBean( name = "imageCodeGenerator")
+    public ValidateCodeGenerator imageCodeGenerator() {
+        ImageCodeGenerator codeGenerator = new ImageCodeGenerator();
+        codeGenerator.setSecurityProperties(securityProperties);
+        return codeGenerator;
+    }
+
+
 }
