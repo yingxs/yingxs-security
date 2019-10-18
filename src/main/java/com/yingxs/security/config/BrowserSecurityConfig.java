@@ -1,5 +1,6 @@
 package com.yingxs.security.config;
 
+import com.yingxs.security.authentication.YingxsLoginUrlAuthenticationEntryPoint;
 import com.yingxs.security.authentication.form.YingxUsernamePasswordAuthenticationFilter;
 import com.yingxs.security.authentication.YingxsAuthenticationFaiurelHandler;
 import com.yingxs.security.authentication.YingxsAuthenticationSuccessHandler;
@@ -50,7 +51,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
         validateCodeFilter.setAuthenticationFailureHandler(yingxsAuthenticationFaiurelHandler);
 
-        http.addFilterBefore(validateCodeFilter,YingxUsernamePasswordAuthenticationFilter.class)
+        http
+            .exceptionHandling().authenticationEntryPoint(new YingxsLoginUrlAuthenticationEntryPoint("")).and()
+            .addFilterBefore(validateCodeFilter,YingxUsernamePasswordAuthenticationFilter.class)
             .apply(usernamePasswordAuthenticationSecurityConfig)
                 .and()
             .formLogin()
