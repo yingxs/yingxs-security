@@ -33,14 +33,24 @@ public class ValidateCodeController {
     @Autowired
     private ValidateCodeGenerator validateCodeGenerator;
 
-    @SysLog("获取图形验证码")
+//    @SysLog("获取图形验证码")
+//    @GetMapping("/code/image")
+//    public SimpleResponse createCode(HttpServletRequest request, HttpServletResponse response) throws Exception {
+//        ImageCode imageCode = validateCodeGenerator.generate( new ServletWebRequest(request) );
+//        HttpSession session = request.getSession();
+//        session.setAttribute(SESSION_KEY+imageCode.getCodeId(), imageCode);
+//        return new SimpleResponse("SUCCESS",imageCode);
+////      ImageIO.write(imageCode.getImage(), "PNG", response.getOutputStream());
+//    }
+
+//    @SysLog("获取图形验证码")
     @GetMapping("/code/image")
-    public SimpleResponse createCode(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void createCode(HttpServletRequest request, HttpServletResponse response) throws Exception {
         ImageCode imageCode = validateCodeGenerator.generate( new ServletWebRequest(request) );
-        HttpSession session = request.getSession();
-        session.setAttribute(SESSION_KEY+imageCode.getCodeId(), imageCode);
-        return new SimpleResponse("SUCCESS",imageCode);
-//      ImageIO.write(imageCode.getImage(), "PNG", response.getOutputStream());
+//        HttpSession session = request.getSession();
+//        session.setAttribute(SESSION_KEY+imageCode.getCodeId(), imageCode);
+//        return new SimpleResponse("SUCCESS",imageCode);
+        ImageIO.write(imageCode.getImage(), "PNG", response.getOutputStream());
     }
 
 }
