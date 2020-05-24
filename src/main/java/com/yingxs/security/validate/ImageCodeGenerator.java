@@ -51,8 +51,8 @@ public class ImageCodeGenerator implements ValidateCodeGenerator {
         ImageCode resultImageCode = new ImageCode(image, sRand, securityProperties.getCode().getImage().getExpireIn());
         ByteArrayOutputStream imageByte = new ByteArrayOutputStream();
         ImageIO.write(resultImageCode.getImage(), "JPG", imageByte);
-        resultImageCode.setBase64String("data:image/jpg;base64,"+ Base64.getEncoder().encodeToString(imageByte.toByteArray()));
-        resultImageCode.setCodeId(UUID.randomUUID().toString());
+//        resultImageCode.setBase64String("data:image/jpg;base64,"+ Base64.getEncoder().encodeToString(imageByte.toByteArray()));
+//        resultImageCode.setCodeId(UUID.randomUUID().toString());
         return resultImageCode;
     }
 

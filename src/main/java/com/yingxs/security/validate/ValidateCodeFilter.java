@@ -42,14 +42,10 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 
     private void validate(HttpServletRequest request) throws ServletRequestBindingException {
         HttpSession session = request.getSession();
-        String codeId = request.getParameter("codeId");
         String codeInRequest = request.getParameter("imageCode");
         // 从session中取出之前的ImageCode
-        ImageCode codeInSession = (ImageCode) session.getAttribute(ValidateCodeController.SESSION_KEY+codeId);
+        ImageCode codeInSession = (ImageCode) session.getAttribute(ValidateCodeController.SESSION_KEY);
 
-        if (StringUtils.isBlank(codeId)) {
-            throw new ValidateCodeExcecption("验证码标识不能为空");
-        }
         if (StringUtils.isBlank(codeInRequest)) {
             throw new ValidateCodeExcecption("验证码的值不能为空");
         }
@@ -58,7 +54,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
         }
 
         if (codeInSession.isExpried()) {
-            session.removeAttribute(ValidateCodeController.SESSION_KEY+codeId);
+            session.removeAttribute(ValidateCodeController.SESSION_KEY);
             throw new ValidateCodeExcecption("验证码已过期");
         }
 
@@ -67,7 +63,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
         }
 
         // 验证码认证成功，将验证码从session中移除
-        session.removeAttribute(ValidateCodeController.SESSION_KEY+codeId);
+        session.removeAttribute(ValidateCodeController.SESSION_KEY);
     }
 
 

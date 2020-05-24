@@ -11,8 +11,6 @@ public class ImageCode {
     private BufferedImage image;
     private String code;
     private LocalDateTime expireTime;
-    private String codeId = "";
-    private String base64String = "";
 
 
 
@@ -59,19 +57,4 @@ public class ImageCode {
         return LocalDateTime.now().isAfter(expireTime);
     }
 
-    public String getCodeId() {
-        return codeId;
-    }
-
-    public void setCodeId(String codeId) {
-        this.codeId = codeId;
-    }
-
-    public String getBase64String() {
-        return base64String;
-    }
-
-    public void setBase64String(String base64String) {
-        this.base64String = base64String;
-    }
 }

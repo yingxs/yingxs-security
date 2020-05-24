@@ -37,7 +37,7 @@ public class YingxsUserDetailsService implements UserDetailsService {
 //                true,// 密码未过期
 //                true,//是否未被锁定
 //                 AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
-        return new UserInfo(1,username,password,null,null, true,true,true,true, AuthorityUtils.commaSeparatedStringToAuthorityList("admin") ); // 可用
+        return new UserInfo(1,username,password,null,null, true,true,true,true, AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_SYSTEM") ); // 可用
 
     }
 

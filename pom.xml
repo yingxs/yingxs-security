@@ -12,6 +12,7 @@
 	<artifactId>yingxs-security</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>yingxs-security</name>
+    <packaging>jar</packaging>
 	<description>yingxs - security project</description>
 
 	<properties>
@@ -60,6 +61,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 

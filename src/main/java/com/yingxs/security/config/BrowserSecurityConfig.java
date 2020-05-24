@@ -1,5 +1,6 @@
 package com.yingxs.security.config;
 
+import com.yingxs.security.authentication.YingxsAccessDeniedHandler;
 import com.yingxs.security.authentication.YingxsLoginUrlAuthenticationEntryPoint;
 import com.yingxs.security.authentication.form.YingxUsernamePasswordAuthenticationFilter;
 import com.yingxs.security.authentication.YingxsAuthenticationFaiurelHandler;
@@ -13,6 +14,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AnonymousAuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
@@ -20,6 +22,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.ArrayList;
@@ -47,6 +50,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SecurityProperties securityProperties;
 
+    @Autowired
+    private AccessDeniedHandler yingxsAccessDeniedHandler;
+
     // 配置密码加密与解密方式
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -61,29 +67,33 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         validateCodeFilter.setAuthenticationFailureHandler(yingxsAuthenticationFaiurelHandler);
 
         http
-            .exceptionHandling().authenticationEntryPoint(new YingxsLoginUrlAuthenticationEntryPoint("")).and()
+            .exceptionHandling()
+                .authenticationEntryPoint(new YingxsLoginUrlAuthenticationEntryPoint(""))
+                .accessDeniedHandler(yingxsAccessDeniedHandler)
+                .and()
             .addFilterBefore(validateCodeFilter,YingxUsernamePasswordAuthenticationFilter.class)
             .apply(usernamePasswordAuthenticationSecurityConfig)
                 .and()
             .formLogin()
             .loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
-                .loginProcessingUrl(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM)
-                .failureHandler(yingxsAuthenticationFaiurelHandler)
-                .successHandler(yingxsAuthenticationSuccessHandler)
-            .and()
-                .authorizeRequests()
-                .antMatchers( SecurityConstants.DEFAULT_LOGIN_PAGE,SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,"/code/*" )
+            .loginProcessingUrl(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM)
+            .failureHandler(yingxsAuthenticationFaiurelHandler)
+            .successHandler(yingxsAuthenticationSuccessHandler)
+                .and()
+            .authorizeRequests()
+            .antMatchers( SecurityConstants.DEFAULT_LOGIN_PAGE,SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,"/code/*" )
             .permitAll()
+                .antMatchers(HttpMethod.GET,"/customer").hasRole("ADMIN")
             .anyRequest()
             .authenticated()
-            .and()
+                .and()
             .csrf().disable();
 
 //        http.httpBasic()			//使用http认证的形式进行登录
 //                .and()
 //                .authorizeRequests()	// 对请求做授权，以下配置都是请求授权的配置
 //                .anyRequest()			// 任何请求
-//                .authenticated();		// 不需要身份认证
+//                .authenticated();		// 都需要身份认证
 
     }
 
