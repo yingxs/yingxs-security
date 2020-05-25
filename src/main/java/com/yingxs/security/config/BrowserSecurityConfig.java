@@ -69,14 +69,15 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .exceptionHandling()
                 .authenticationEntryPoint(new YingxsLoginUrlAuthenticationEntryPoint(""))
-                .accessDeniedHandler(yingxsAccessDeniedHandler)
-                .and()
-            .addFilterBefore(validateCodeFilter,YingxUsernamePasswordAuthenticationFilter.class)
-            .apply(usernamePasswordAuthenticationSecurityConfig)
+                .accessDeniedHandler(yingxsAccessDeniedHandler);
+        if (securityProperties.getCode().getImage().isEnable()) {
+            http.addFilterBefore(validateCodeFilter,YingxUsernamePasswordAuthenticationFilter.class);
+        }
+        http.apply(usernamePasswordAuthenticationSecurityConfig)
                 .and()
             .formLogin()
             .loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
-            .loginProcessingUrl(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM)
+//            .loginProcessingUrl(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM)
             .failureHandler(yingxsAuthenticationFaiurelHandler)
             .successHandler(yingxsAuthenticationSuccessHandler)
                 .and()
